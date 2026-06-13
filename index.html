@@ -42,6 +42,25 @@
       margin: 5px 0 0 0;
       font-size: 14px;
     }
+    #status {
+      position: fixed;
+      bottom: 20px;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      color: white;
+      font-size: 14px;
+      font-family: Arial, sans-serif;
+      z-index: 999;
+      padding: 8px;
+      background: rgba(0,0,0,0.5);
+    }
+    #status.error {
+      background: rgba(180,0,0,0.8);
+    }
+    #status.success {
+      background: rgba(0,130,0,0.8);
+    }
   </style>
 </head>
 <body>
@@ -51,6 +70,8 @@
   <p>Point your camera at the printed image.</p>
 </div>
 
+<div id="status">⏳ Loading statue.glb...</div>
+
 <a-scene
   mindar-image="imageTargetSrc: targets.mind; filterMinCF: 0.001; filterBeta: 0.001; missTolerance: 10; warmupTolerance: 5"
   embedded
@@ -59,7 +80,7 @@
   vr-mode-ui="enabled: false"
   device-orientation-permission-ui="enabled: false"
 >
-  <a-assets>
+  <a-assets timeout="30000">
     <a-asset-item id="myModel" src="statue.glb"></a-asset-item>
   </a-assets>
 
@@ -70,6 +91,7 @@
 
   <a-entity mindar-image-target="targetIndex: 0">
     <a-gltf-model
+      id="statue"
       src="#myModel"
       position="0 0 0"
       scale="2 2 2"
@@ -78,5 +100,41 @@
   </a-entity>
 
 </a-scene>
+
+<script>
+  const status = document.getElementById('status');
+  const asset = document.getElementById('myModel');
+  const scene = document.querySelector('a-scene');
+
+  // Check if .glb loads successfully
+  asset.addEventListener('loaded', () => {
+    status.textContent = '✅ statue.glb loaded! Scan the image.';
+    status.className = 'success';
+    setTimeout(() => status.style.display = 'none', 3000);
+  });
+
+  asset.addEventListener('error', () => {
+    status.textContent = '❌ Error: statue.glb could not be loaded. Check filename.';
+    status.className = 'error';
+  });
+
+  // Confirm when target is found
+  scene.addEventListener('loaded', () => {
+    const target = document.querySelector('[mindar-image-target]');
+    target.addEventListener('targetFound', () => {
+      status.style.display = 'block';
+      status.textContent = '🎯 Target found! Showing statue...';
+      status.className = 'success';
+      setTimeout(() => status.style.display = 'none', 2000);
+    });
+    target.addEventListener('targetLost', () => {
+      status.style.display = 'block';
+      status.textContent = '👀 Keep camera on the image...';
+      status.className = '';
+      setTimeout(() => status.style.display = 'none', 2000);
+    });
+  });
+</script>
+
 </body>
 </html>
