@@ -34,14 +34,8 @@
       z-index: 999;
       box-sizing: border-box;
     }
-    #overlay h2 {
-      margin: 0;
-      font-size: 18px;
-    }
-    #overlay p {
-      margin: 5px 0 0 0;
-      font-size: 14px;
-    }
+    #overlay h2 { margin: 0; font-size: 18px; }
+    #overlay p { margin: 5px 0 0 0; font-size: 14px; }
     #status {
       position: fixed;
       bottom: 20px;
@@ -88,14 +82,25 @@
 
   <a-entity mindar-image-target="targetIndex: 0">
 
-    <!-- Statue of Liberty head - big 2x2 meters -->
-    <a-gltf-model
-      id="statue"
-      src="#myModel"
-      position="0 1 0"
-      scale="20 20 20"
-      rotation="0 0 0">
-    </a-gltf-model>
+    <!-- Scale 0.001 - far left -->
+    <a-gltf-model src="#myModel" position="-2 0 0" scale="0.001 0.001 0.001" rotation="0 0 0"></a-gltf-model>
+    <a-text value="0.001" position="-2 -0.3 0" scale="0.5 0.5 0.5" color="white" align="center"></a-text>
+
+    <!-- Scale 0.01 -->
+    <a-gltf-model src="#myModel" position="-1 0 0" scale="0.01 0.01 0.01" rotation="0 0 0"></a-gltf-model>
+    <a-text value="0.01" position="-1 -0.3 0" scale="0.5 0.5 0.5" color="white" align="center"></a-text>
+
+    <!-- Scale 0.1 - center -->
+    <a-gltf-model src="#myModel" position="0 0 0" scale="0.1 0.1 0.1" rotation="0 0 0"></a-gltf-model>
+    <a-text value="0.1" position="0 -0.3 0" scale="0.5 0.5 0.5" color="white" align="center"></a-text>
+
+    <!-- Scale 1 -->
+    <a-gltf-model src="#myModel" position="1 0 0" scale="1 1 1" rotation="0 0 0"></a-gltf-model>
+    <a-text value="1" position="1 -0.3 0" scale="0.5 0.5 0.5" color="white" align="center"></a-text>
+
+    <!-- Scale 10 - far right -->
+    <a-gltf-model src="#myModel" position="2 0 0" scale="10 10 10" rotation="0 0 0"></a-gltf-model>
+    <a-text value="10" position="2 -0.3 0" scale="0.5 0.5 0.5" color="white" align="center"></a-text>
 
   </a-entity>
 
