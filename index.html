@@ -90,13 +90,25 @@
   <a-light type="directional" position="1 2 1" intensity="2"></a-light>
 
   <a-entity mindar-image-target="targetIndex: 0">
+
+    <!-- Test box so we know the anchor is working -->
+    <a-box
+      color="#ff0000"
+      position="0 0 0"
+      width="0.3"
+      height="0.3"
+      depth="0.3">
+    </a-box>
+
+    <!-- Statue with extreme scale to find it -->
     <a-gltf-model
       id="statue"
       src="#myModel"
       position="0 0 0"
-      scale="2 2 2"
+      scale="10 10 10"
       rotation="0 0 0">
     </a-gltf-model>
+
   </a-entity>
 
 </a-scene>
@@ -106,7 +118,6 @@
   const asset = document.getElementById('myModel');
   const scene = document.querySelector('a-scene');
 
-  // Check if .glb loads successfully
   asset.addEventListener('loaded', () => {
     status.textContent = '✅ statue.glb loaded! Scan the image.';
     status.className = 'success';
@@ -118,7 +129,6 @@
     status.className = 'error';
   });
 
-  // Confirm when target is found
   scene.addEventListener('loaded', () => {
     const target = document.querySelector('[mindar-image-target]');
     target.addEventListener('targetFound', () => {
