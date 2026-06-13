@@ -55,12 +55,8 @@
       padding: 8px;
       background: rgba(0,0,0,0.5);
     }
-    #status.error {
-      background: rgba(180,0,0,0.8);
-    }
-    #status.success {
-      background: rgba(0,130,0,0.8);
-    }
+    #status.error { background: rgba(180,0,0,0.8); }
+    #status.success { background: rgba(0,130,0,0.8); }
   </style>
 </head>
 <body>
@@ -70,7 +66,7 @@
   <p>Point your camera at the printed image.</p>
 </div>
 
-<div id="status">⏳ Loading statue.glb...</div>
+<div id="status">⏳ Loading model...</div>
 
 <a-scene
   mindar-image="imageTargetSrc: targets.mind; filterMinCF: 0.001; filterBeta: 0.001; missTolerance: 10; warmupTolerance: 5"
@@ -80,32 +76,33 @@
   vr-mode-ui="enabled: false"
   device-orientation-permission-ui="enabled: false"
 >
-  <a-assets timeout="30000">
+  <a-assets timeout="60000">
     <a-asset-item id="myModel" src="statue.glb"></a-asset-item>
   </a-assets>
 
   <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-  <a-light type="ambient" intensity="1.5"></a-light>
-  <a-light type="directional" position="1 2 1" intensity="2"></a-light>
+  <a-light type="ambient" intensity="2"></a-light>
+  <a-light type="directional" position="1 2 1" intensity="3"></a-light>
+  <a-light type="directional" position="-1 1 -1" intensity="1.5"></a-light>
 
   <a-entity mindar-image-target="targetIndex: 0">
 
-    <!-- Test box so we know the anchor is working -->
+    <!-- Reference box so we always know anchor is working -->
     <a-box
       color="#ff0000"
-      position="0 0 0"
-      width="0.3"
-      height="0.3"
-      depth="0.3">
+      position="-0.5 0 0"
+      width="0.15"
+      height="0.15"
+      depth="0.15">
     </a-box>
 
-    <!-- Statue with extreme scale to find it -->
+    <!-- Statue - trying multiple scale and position combos -->
     <a-gltf-model
       id="statue"
       src="#myModel"
       position="0 0 0"
-      scale="10 10 10"
+      scale="0.01 0.01 0.01"
       rotation="0 0 0">
     </a-gltf-model>
 
@@ -119,13 +116,13 @@
   const scene = document.querySelector('a-scene');
 
   asset.addEventListener('loaded', () => {
-    status.textContent = '✅ statue.glb loaded! Scan the image.';
+    status.textContent = '✅ Model loaded! Scan the image.';
     status.className = 'success';
     setTimeout(() => status.style.display = 'none', 3000);
   });
 
   asset.addEventListener('error', () => {
-    status.textContent = '❌ Error: statue.glb could not be loaded. Check filename.';
+    status.textContent = '❌ Error loading model. Check filename.';
     status.className = 'error';
   });
 
@@ -133,7 +130,7 @@
     const target = document.querySelector('[mindar-image-target]');
     target.addEventListener('targetFound', () => {
       status.style.display = 'block';
-      status.textContent = '🎯 Target found! Showing statue...';
+      status.textContent = '🎯 Target found!';
       status.className = 'success';
       setTimeout(() => status.style.display = 'none', 2000);
     });
